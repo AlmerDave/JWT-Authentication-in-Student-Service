@@ -25,7 +25,7 @@ public class StudentController {
 	private StudentService studentService;
 	
 	@GetMapping("/students")
-	public ResponseEntity<List<StudentDto>> retreivedAllStudents(Principal principal){
+	public ResponseEntity<List<StudentDto>> retreivedAllStudents(){
 		List<StudentDto> listOfStudent = studentService.retrieveAllStudents();
 		
 		return ResponseEntity.ok(listOfStudent);
@@ -39,14 +39,14 @@ public class StudentController {
 	}
 	
 	@GetMapping("/students/{studentId}/courses")
-	public List<CourseDto> retrieveCourses(@PathVariable String studentId){
-		return studentService.retrieveCourses(studentId);
+	public ResponseEntity<List<CourseDto>> retrieveCourses(@PathVariable String studentId){
+		return ResponseEntity.status(HttpStatus.OK).body(studentService.retrieveCourses(studentId));
 	}
 	
 	@GetMapping("/students/{studentId}/courses/{courseId}")
-	public CourseDto retrieveCourse(@PathVariable String studentId, 
+	public ResponseEntity<CourseDto> retrieveCourse(@PathVariable String studentId, 
 			@PathVariable String courseId) {
-		return studentService.retrieveCourse(studentId, courseId);
+		return ResponseEntity.status(HttpStatus.OK).body(studentService.retrieveCourse(studentId, courseId));  
 		
 	}
 	

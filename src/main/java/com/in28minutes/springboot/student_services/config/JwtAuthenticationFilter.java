@@ -29,13 +29,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Autowired
 	@Lazy
 	private UserDetailsService userDetailsService;
-//	
-//	
-//	public JwtAuthenticationFilter(@Lazy UserDetailsService userDetailsService) {
-//		this.userDetailsService = userDetailsService;
-//	}
-
-
 
 	@Override
 	protected void doFilterInternal(
@@ -72,8 +65,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		} catch (Exception e) {
 			handlerExceptionResolver.resolveException(request, response, null, e);
 		}
-			
-
+		
 	}
+	
 
 }
