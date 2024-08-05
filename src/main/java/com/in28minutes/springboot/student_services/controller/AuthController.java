@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.in28minutes.springboot.student_services.dto.LoginRequest;
+import com.in28minutes.springboot.student_services.dto.RegisterUserRequest;
+import com.in28minutes.springboot.student_services.service.AuthService;
 import com.in28minutes.springboot.student_services.utils.JwtUtils;
 
 @RestController
@@ -21,7 +23,9 @@ public class AuthController {
 	
 	@Autowired
 	private AuthenticationManager authManager;
-
+	
+	@Autowired
+	private AuthService authService;
 	
 	@PostMapping("/auth/login")
 	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
@@ -42,8 +46,20 @@ public class AuthController {
 		
 	}
 	
+	@PostMapping("/auth/register")
+	public ResponseEntity<?> register(@RequestBody RegisterUserRequest request){
+		
+		try {
+			return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(request));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User already created");
+		}
+		
+		
+	}
+	
 	@GetMapping("/protected")
-    @Secured("ROLE_USER") // Role-based authorization
+    @Secured("ROLE_ADMIN") // Role-based authorization
     public String protectedResource() {
 		
 		System.out.println("Username -> " + SecurityContextHolder.getContext().getAuthentication().getName());

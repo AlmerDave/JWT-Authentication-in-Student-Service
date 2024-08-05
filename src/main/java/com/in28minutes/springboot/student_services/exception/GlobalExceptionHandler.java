@@ -2,6 +2,7 @@ package com.in28minutes.springboot.student_services.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -25,6 +26,14 @@ public class GlobalExceptionHandler {
 		if(exception instanceof AuthorizationDeniedException) {
 			errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, exception.getMessage());
 			errorDetail.setProperty("description", "You are not allowed to access this URL");
+		}
+		
+		if(exception instanceof HttpMessageNotReadableException) {
+			errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
+		}
+		
+		if(exception instanceof IllegalArgumentException) {
+			errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
 		}
 		
 		return errorDetail;
